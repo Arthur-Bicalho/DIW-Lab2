@@ -1,7 +1,7 @@
 import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { clienteService } from '../src/pedidos-contratos/services/clienteService.js';
-import { ErroValidacao } from '../src/pedidos-contratos/regras/validacoes.js';
+import { ErroValidacao } from '../src/pedidos-contratos/regras/erros.js';
 
 let banco;
 
