@@ -9,3 +9,15 @@ export function formatarCpf(cpf) {
 export function formatarMoeda(valor) {
   return Number(valor).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
+
+export function formatarData(iso) {
+  const [ano, mes, dia] = iso.split('-');
+  return `${dia}/${mes}/${ano}`;
+}
+
+export function dataDeHoje() {
+  const agora = new Date();
+  const mes = String(agora.getMonth() + 1).padStart(2, '0');
+  const dia = String(agora.getDate()).padStart(2, '0');
+  return `${agora.getFullYear()}-${mes}-${dia}`;
+}

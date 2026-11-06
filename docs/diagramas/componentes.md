@@ -10,7 +10,7 @@ flowchart LR
             login["login.html"]
             cadastro["cadastro.html"]
             clientes["clientes.html"]
-            pedidos["pedidos.html"]
+            pedidos["meus-pedidos.html"]
             avaliacao["avaliacao.html"]
         end
         subgraph paginas["src/paginas"]
@@ -49,7 +49,7 @@ flowchart LR
 |------------|-----------|------------|
 | views | funções de inicialização por página | components, services, regras, sessao |
 | components | `navbar`, `guarda` (exigirAcesso), `formulario`, `camposCliente`, `entidadesEmpregadoras`: montam HTML Bootstrap e protegem páginas | alertas, sessao, regras/permissoes |
-| services | `clienteService` (CRUD), `usuarioService.entrar` e operações de negócio | regras, api |
+| services | `clienteService` (CRUD), `usuarioService.entrar`, `pedidoService` (criar, modificar, cancelar), `automovelService` | regras, api |
 | regras | funções puras de validação, formatação, transição e permissão; `ErroValidacao` | models |
-| api.js | `requisitar(caminho, opcoes)` com tratamento de erro | Fetch API |
+| api.js | `requisitar(caminho, opcoes)` com tratamento de erro; `recurso(nome)` com filtro no cliente (ADR 0007) | Fetch API |
 | JSON Server | `/usuarios`, `/automoveis`, `/pedidos`, `/contratos` | db.json |

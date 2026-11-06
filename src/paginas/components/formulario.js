@@ -1,3 +1,6 @@
+import { ErroValidacao } from '../../pedidos-contratos/regras/erros.js';
+import { mostrarAlerta } from '../../shared/alertas.js';
+
 export function limparErros(formulario) {
   formulario.querySelectorAll('.is-invalid').forEach((c) => {
     c.classList.remove('is-invalid');
@@ -20,4 +23,14 @@ export function mostrarErros(formulario, erros) {
     }
     mensagemEl?.classList.add('d-block');
   }
+}
+
+export function mensagemDoErro(erro) {
+  return erro instanceof ErroValidacao ? Object.values(erro.erros)[0] : erro.message;
+}
+
+// Erros de campo vão para o formulário; os demais viram alerta.
+export function tratarErroDoFormulario(formulario, erro) {
+  if (erro instanceof ErroValidacao && !erro.erros.geral) mostrarErros(formulario, erro.erros);
+  else mostrarAlerta(mensagemDoErro(erro));
 }

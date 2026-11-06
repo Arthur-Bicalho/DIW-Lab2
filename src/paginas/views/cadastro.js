@@ -1,9 +1,7 @@
 import { clienteService } from '../../pedidos-contratos/services/clienteService.js';
-import { ErroValidacao } from '../../pedidos-contratos/regras/erros.js';
 import { paginaInicial } from '../../pedidos-contratos/regras/permissoes.js';
 import { iniciarSessao } from '../../shared/sessao.js';
-import { mostrarAlerta } from '../../shared/alertas.js';
-import { limparErros, mostrarErros } from '../components/formulario.js';
+import { limparErros, tratarErroDoFormulario } from '../components/formulario.js';
 import { lerCamposCliente, montarCamposCliente } from '../components/camposCliente.js';
 import { iniciarEntidadesEmpregadoras } from '../components/entidadesEmpregadoras.js';
 
@@ -23,7 +21,6 @@ formulario.addEventListener('submit', async (evento) => {
     iniciarSessao(cliente);
     location.href = paginaInicial(cliente.perfil);
   } catch (erro) {
-    if (erro instanceof ErroValidacao) mostrarErros(formulario, erro.erros);
-    else mostrarAlerta(erro.message);
+    tratarErroDoFormulario(formulario, erro);
   }
 });

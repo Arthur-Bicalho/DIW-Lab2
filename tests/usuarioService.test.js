@@ -5,11 +5,7 @@ import { ErroValidacao } from '../src/pedidos-contratos/regras/erros.js';
 
 const usuarios = [{ id: '1', perfil: 'CLIENTE', nome: 'Ana', email: 'ana@email.com', senha: '123456' }];
 
-globalThis.fetch = async (url) => {
-  const filtros = Object.fromEntries(new URLSearchParams(url.split('?')[1]));
-  const achados = usuarios.filter((u) => Object.entries(filtros).every(([k, v]) => u[k] === v));
-  return { ok: true, status: 200, json: async () => achados };
-};
+globalThis.fetch = async () => ({ ok: true, status: 200, json: async () => usuarios });
 
 test('entrar devolve o usuário com e-mail e senha corretos', async () => {
   const usuario = await usuarioService.entrar('ANA@email.com ', '123456');

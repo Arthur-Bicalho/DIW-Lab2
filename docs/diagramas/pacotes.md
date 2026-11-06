@@ -33,8 +33,8 @@ flowchart TB
 | Pacote | Conteúdo | Classes do diagrama de classes |
 |--------|----------|-------------------------------|
 | `pedidos-contratos/models` | Constantes de perfis, status e tipos de propriedade | Usuario, Pedido, Contrato (valores permitidos) |
-| `pedidos-contratos/regras` | `cliente.js` (CPF, campos, limite de 3 entidades, rendimento total), `formatacao.js` (CPF, moeda, dígitos), `erros.js` (ErroValidacao), `permissoes.js` (acesso a páginas por perfil); depois, transições de status (funções puras) | Cliente, EntidadeEmpregadora, Pedido, Parecer |
-| `pedidos-contratos/services` | Operações sobre a API | Usuario, Cliente, Automovel, Pedido, Contrato |
+| `pedidos-contratos/regras` | `cliente.js` (CPF, campos, limite de 3 entidades, rendimento total), `formatacao.js` (CPF, moeda, dígitos), `erros.js` (ErroValidacao), `permissoes.js` (acesso a páginas por perfil), `pedido.js` (transições de status, validação de período, disponibilidade do Automóvel) | Cliente, EntidadeEmpregadora, Pedido, Parecer |
+| `pedidos-contratos/services` | `clienteService`, `usuarioService`, `pedidoService`, `automovelService`: operações sobre a API | Usuario, Cliente, Automovel, Pedido, Contrato |
 | `paginas/views` | Uma tela por arquivo | casos de uso UC01 a UC12 |
 | `paginas/components` | Navbar, guarda de rota, campos de Cliente, entidades empregadoras, erros de formulário | — |
 | `shared` | Fetch, sessão e alertas | — |

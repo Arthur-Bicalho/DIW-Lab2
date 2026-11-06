@@ -1,35 +1,13 @@
 import { test, beforeEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { clienteService } from '../src/pedidos-contratos/services/clienteService.js';
+import { instalarBancoFalso } from './apoio/bancoFalso.js';
 import { ErroValidacao } from '../src/pedidos-contratos/regras/erros.js';
 
 let banco;
 
 beforeEach(() => {
-  banco = { usuarios: [], pedidos: [] };
-  globalThis.fetch = async (url, opcoes = {}) => {
-    const [caminho, consulta = ''] = url.slice(1).split('?');
-    const [colecao, id] = caminho.split('/');
-    const filtros = Object.fromEntries(new URLSearchParams(consulta));
-    const resposta = (dados) => ({ ok: true, status: 200, json: async () => dados });
-    const metodo = opcoes.method ?? 'GET';
-
-    if (metodo === 'POST') {
-      const novo = { id: String(banco[colecao].length + 1), ...JSON.parse(opcoes.body) };
-      banco[colecao].push(novo);
-      return resposta(novo);
-    }
-    if (metodo === 'GET' && id) {
-      return resposta(banco[colecao].find((i) => i.id === id));
-    }
-    if (metodo === 'DELETE') {
-      banco[colecao] = banco[colecao].filter((i) => i.id !== id);
-      return resposta({});
-    }
-    return resposta(
-      banco[colecao].filter((i) => Object.entries(filtros).every(([k, v]) => String(i[k]) === v)),
-    );
-  };
+  banco = instalarBancoFalso(['usuarios', 'pedidos']);
 });
 
 const dados = () => ({

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Meus pedidos - Aluguel de Carros</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+  <nav id="navbar" aria-label="Principal"></nav>
+  <main class="container py-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-3">
+      <h1 class="h3 mb-0">Meus pedidos</h1>
+      <button type="button" class="btn btn-primary" id="novo-pedido">Novo pedido</button>
+    </div>
+
+    <div id="alertas" aria-live="polite"></div>
+
+    <div class="table-responsive">
+      <table class="table table-striped align-middle">
+        <caption class="visually-hidden">Pedidos de aluguel do cliente</caption>
+        <thead>
+          <tr>
+            <th scope="col">Automóvel</th>
+            <th scope="col">Período</th>
+            <th scope="col">Status</th>
+            <th scope="col">Parecer</th>
+            <th scope="col"><span class="visually-hidden">Ações</span></th>
+          </tr>
+        </thead>
+        <tbody id="corpo-tabela"></tbody>
+      </table>
+    </div>
+    <p id="sem-pedidos" class="text-muted" hidden>Você ainda não fez nenhum pedido.</p>
+  </main>
+
+  <div class="modal fade" id="modal-pedido" tabindex="-1" aria-labelledby="titulo-modal" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="form-pedido" novalidate>
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="titulo-modal">Novo pedido</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="modal-body row g-3">
+          <div class="col-12">
+            <label class="form-label" for="automovelId">Automóvel</label>
+            <select class="form-select" id="automovelId" name="automovelId" required aria-required="true" aria-describedby="erro-automovelId"></select>
+            <div class="invalid-feedback" id="erro-automovelId"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="dataInicio">Início</label>
+            <input class="form-control" id="dataInicio" name="dataInicio" type="date" required aria-required="true" aria-describedby="erro-dataInicio">
+            <div class="invalid-feedback" id="erro-dataInicio"></div>
+          </div>
+          <div class="col-md-6">
+            <label class="form-label" for="dataFim">Término</label>
+            <input class="form-control" id="dataFim" name="dataFim" type="date" required aria-required="true" aria-describedby="erro-dataFim">
+            <div class="invalid-feedback" id="erro-dataFim"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="/src/paginas/views/pedidos.js"></script>
+</body>
+</html>
