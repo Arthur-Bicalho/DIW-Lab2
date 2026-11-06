@@ -53,3 +53,47 @@ flowchart LR
 | regras | funções puras de validação, formatação, transição e permissão; `ErroValidacao` | models |
 | api.js | `requisitar(caminho, opcoes)` com tratamento de erro; `recurso(nome)` com filtro no cliente (ADR 0007) | Fetch API |
 | JSON Server | `/usuarios`, `/automoveis`, `/pedidos`, `/contratos` | db.json |
+
+## Visão de implantação
+
+O diagrama acima descreve a execução local. A publicação na Vercel usa os mesmos componentes em outra implantação, descrita a seguir (ADR 0009).
+
+```mermaid
+flowchart TB
+    subgraph local["Cenário A: local (npm start)"]
+        nav1["Navegador"]
+        subgraph proc["Processo Node: json-server db.json --static ."]
+            js1["JSON Server (REST + arquivos estáticos)"]
+        end
+        db1[("db.json (leitura e gravação)")]
+        nav1 -- "HTTP: páginas e /usuarios, /automoveis, /pedidos, /contratos" --> js1
+        js1 -- "lê e grava" --> db1
+    end
+
+    subgraph vercel["Cenário B: Vercel"]
+        nav2["Navegador"]
+        subgraph build["Build: scripts/build.js"]
+            fonte["public/ e src/"]
+            dist["dist/"]
+            fonte -- "cópia" --> dist
+        end
+        cdn["CDN estática da Vercel"]
+        rw{"rewrites do vercel.json"}
+        subgraph fn["Vercel Function: api/index.js"]
+            api2["servidor/api.js: JSON Server em memória"]
+        end
+        seed[("db.json (semente, somente leitura)")]
+        dist -- "publicado" --> cdn
+        nav2 -- "GET /public/*.html e /src/*.js" --> cdn
+        nav2 -- "/usuarios, /automoveis, /pedidos, /contratos" --> rw
+        rw -- "destino /api" --> api2
+        seed -- "carga inicial em cada instância" --> api2
+    end
+```
+
+| Aspecto | A: local | B: Vercel |
+|---------|----------|-----------|
+| Processo | um processo Node contínuo (`npm start`) | Vercel Function efêmera, criada sob demanda |
+| Persistência | `db.json` em disco, gravado a cada alteração | memória da instância; `db.json` é só a semente e volta ao estado inicial em cold start |
+| Arquivos estáticos | servidos pelo JSON Server (`--static .`) | servidos pela CDN a partir de `dist/` |
+| Para o usuário | dados permanecem entre execuções | dados de demonstração; podem sumir ou diferir entre instâncias |
