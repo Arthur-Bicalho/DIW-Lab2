@@ -17,6 +17,12 @@ test('podeAcessarPagina separa as páginas por perfil', () => {
   assert.equal(podeAcessarPagina(undefined, 'clientes'), false);
 });
 
+test('o catálogo é só do Cliente', () => {
+  assert.equal(podeAcessarPagina('CLIENTE', 'catalogo'), true);
+  assert.equal(podeAcessarPagina('EMPRESA', 'catalogo'), false);
+  assert.equal(podeAcessarPagina('BANCO', 'catalogo'), false);
+});
+
 test('paginaInicial leva cada perfil à sua página', () => {
   assert.equal(paginaInicial('CLIENTE'), 'meus-pedidos.html');
   assert.equal(paginaInicial('BANCO'), 'avaliacao.html');

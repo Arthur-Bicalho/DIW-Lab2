@@ -26,3 +26,21 @@ export const STATUS_EM_ANDAMENTO = Object.freeze([
   STATUS_PEDIDO.EM_ANALISE,
   STATUS_PEDIDO.APROVADO,
 ]);
+
+export const CATEGORIAS_AUTOMOVEL = Object.freeze({
+  HATCH: 'Hatch',
+  SEDAN: 'Sedan',
+  SUV: 'SUV',
+  PICAPE: 'Picape',
+  MINIVAN: 'Minivan',
+  ESPORTIVO: 'Esportivo',
+});
+
+export const SEGMENTOS_AUTOMOVEL = Object.freeze({
+  POPULAR: 'Popular',
+  LUXO: 'Luxo',
+});
+
+export const ANO_MINIMO_AUTOMOVEL = 2016;
+
+export const ITENS_POR_PAGINA = 12;
