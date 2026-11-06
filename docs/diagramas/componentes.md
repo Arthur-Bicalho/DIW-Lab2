@@ -6,6 +6,7 @@ Visão de execução: o navegador carrega páginas HTML estáticas, cada uma com
 flowchart LR
     subgraph navegador["Navegador (Cliente ou Agente)"]
         subgraph html["public/*.html + Bootstrap 5 (CDN)"]
+            index["index.html"]
             login["login.html"]
             cadastro["cadastro.html"]
             clientes["clientes.html"]
@@ -47,8 +48,8 @@ flowchart LR
 | Componente | Interface | Depende de |
 |------------|-----------|------------|
 | views | funções de inicialização por página | components, services, regras, sessao |
-| components | funções que montam HTML Bootstrap | alertas |
-| services | `listar`, `obter`, `criar`, `atualizar`, `remover` e operações de negócio | regras, api |
+| components | `navbar`, `guarda` (exigirAcesso), `formulario`, `camposCliente`, `entidadesEmpregadoras`: montam HTML Bootstrap e protegem páginas | alertas, sessao, regras/permissoes |
+| services | `clienteService` (CRUD), `usuarioService.entrar` e operações de negócio | regras, api |
 | regras | funções puras de validação, formatação, transição e permissão; `ErroValidacao` | models |
 | api.js | `requisitar(caminho, opcoes)` com tratamento de erro | Fetch API |
 | JSON Server | `/usuarios`, `/automoveis`, `/pedidos`, `/contratos` | db.json |

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Entrar - Aluguel de Carros</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+  <main class="container py-5" style="max-width: 28rem;">
+    <h1 class="h3 mb-3">Aluguel de Carros</h1>
+    <div id="alertas" aria-live="polite"></div>
+    <form id="form-login" class="card card-body" novalidate>
+      <div class="mb-3">
+        <label class="form-label" for="email">E-mail</label>
+        <input class="form-control" id="email" name="email" type="email" autocomplete="username" required>
+      </div>
+      <div class="mb-3">
+        <label class="form-label" for="senha">Senha</label>
+        <input class="form-control" id="senha" name="senha" type="password" autocomplete="current-password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100">Entrar</button>
+    </form>
+    <p class="mt-3 text-center">Ainda não tem conta? <a href="cadastro.html">Cadastre-se</a></p>
+    <p class="small text-muted text-center">Login simulado para fins didáticos: não é autenticação real.</p>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="/src/paginas/views/login.js"></script>
+</body>
+</html>
