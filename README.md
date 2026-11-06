@@ -298,3 +298,4 @@ Prefixos: `docs/` (modelagem e documentação), `feature/` (funcionalidades) e `
 | [#22](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/22) | `feature/avaliacao-agente` | Avaliação, Parecer, modificação pelo Agente; componentes compartilhados | pacotes e componentes |
 | [#23](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/23) | `feature/contratos-credito` | Contrato, Contrato de Crédito, Tipo de Propriedade | pacotes e componentes |
 | [#25](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/25) | `refactor/arquitetura-prototipo` | Diálogos de avaliação e contrato como componentes (ADR 0008) | pacotes e componentes |
+| [#26](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/26) | `docs/readme` | README conforme o template, PROGRESSO.md e checklist | nenhum |
