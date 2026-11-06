@@ -1,10 +1,8 @@
-export class ErroApi extends Error {
-  constructor(mensagem, status = null) {
-    super(mensagem);
-    this.name = 'ErroApi';
-    this.status = status;
-  }
-}
+import { ErroApi } from './erro-api.js';
+import { ARMAZENAMENTO } from './modo.js';
+import { recursoLocal } from './armazenamento-local.js';
+
+export { ErroApi };
 
 export async function requisitar(caminho, { metodo = 'GET', corpo } = {}) {
   const opcoes = { method: metodo };
@@ -27,6 +25,8 @@ export async function requisitar(caminho, { metodo = 'GET', corpo } = {}) {
 }
 
 export function recurso(nome) {
+  if (ARMAZENAMENTO === 'local') return recursoLocal(nome);
+
   const raiz = `/${nome}`;
   return {
     // O JSON Server v1 compara filtros numéricos (?clienteId=1) com tipos estritos e

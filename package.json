@@ -12,7 +12,7 @@
     "build": "node scripts/build.js",
     "test": "node --test \"tests/**/*.test.js\""
   },
-  "dependencies": {
+  "devDependencies": {
     "json-server": "1.0.0-beta.15"
   }
 }
