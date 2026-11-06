@@ -1,0 +1,22 @@
+export const PERFIS = Object.freeze({
+  CLIENTE: 'CLIENTE',
+  EMPRESA: 'EMPRESA',
+  BANCO: 'BANCO',
+});
+
+export const STATUS_PEDIDO = Object.freeze({
+  PENDENTE: 'PENDENTE',
+  EM_ANALISE: 'EM_ANALISE',
+  APROVADO: 'APROVADO',
+  REPROVADO: 'REPROVADO',
+  CONTRATADO: 'CONTRATADO',
+  CANCELADO: 'CANCELADO',
+});
+
+export const TIPOS_PROPRIEDADE = Object.freeze({
+  CLIENTE: 'CLIENTE',
+  EMPRESA: 'EMPRESA',
+  BANCO: 'BANCO',
+});
+
+export const MAX_ENTIDADES_EMPREGADORAS = 3;

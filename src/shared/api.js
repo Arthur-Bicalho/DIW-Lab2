@@ -1,0 +1,41 @@
+export class ErroApi extends Error {
+  constructor(mensagem, status = null) {
+    super(mensagem);
+    this.name = 'ErroApi';
+    this.status = status;
+  }
+}
+
+export async function requisitar(caminho, { metodo = 'GET', corpo } = {}) {
+  const opcoes = { method: metodo };
+  if (corpo !== undefined) {
+    opcoes.headers = { 'Content-Type': 'application/json' };
+    opcoes.body = JSON.stringify(corpo);
+  }
+
+  let resposta;
+  try {
+    resposta = await fetch(caminho, opcoes);
+  } catch {
+    throw new ErroApi('Não foi possível conectar ao servidor. Verifique se a API está em execução.');
+  }
+
+  if (!resposta.ok) {
+    throw new ErroApi(`Falha na requisição (${resposta.status}).`, resposta.status);
+  }
+  return resposta.status === 204 ? null : resposta.json();
+}
+
+export function recurso(nome) {
+  const raiz = `/${nome}`;
+  return {
+    listar(filtros = {}) {
+      const consulta = new URLSearchParams(filtros).toString();
+      return requisitar(consulta ? `${raiz}?${consulta}` : raiz);
+    },
+    obter: (id) => requisitar(`${raiz}/${id}`),
+    criar: (dados) => requisitar(raiz, { metodo: 'POST', corpo: dados }),
+    atualizar: (id, dados) => requisitar(`${raiz}/${id}`, { metodo: 'PATCH', corpo: dados }),
+    remover: (id) => requisitar(`${raiz}/${id}`, { metodo: 'DELETE' }),
+  };
+}
