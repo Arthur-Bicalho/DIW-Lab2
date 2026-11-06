@@ -2,6 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import {
   podeTransitar, clientePodeModificar, clientePodeCancelar, validarPedido, automovelDisponivel,
+  agentePodeIniciarAnalise, agentePodeAvaliar, agentePodeModificar, validarParecer,
 } from '../src/pedidos-contratos/regras/pedido.js';
 
 test('podeTransitar aceita o fluxo previsto no ADR 0001', () => {
@@ -59,4 +60,28 @@ test('automovelDisponivel ignora Pedidos encerrados e o próprio Pedido', () => 
   assert.equal(automovelDisponivel('1', pedidos), true);
   assert.equal(automovelDisponivel('2', pedidos), false);
   assert.equal(automovelDisponivel('2', pedidos, '3'), true);
+});
+
+test('Agente inicia análise só de Pedido PENDENTE', () => {
+  assert.equal(agentePodeIniciarAnalise({ status: 'PENDENTE' }), true);
+  assert.equal(agentePodeIniciarAnalise({ status: 'EM_ANALISE' }), false);
+});
+
+test('só o Agente responsável avalia Pedido EM_ANALISE', () => {
+  const pedido = { status: 'EM_ANALISE', agenteId: '5' };
+  assert.equal(agentePodeAvaliar(pedido, '5'), true);
+  assert.equal(agentePodeAvaliar(pedido, '6'), false);
+  assert.equal(agentePodeAvaliar({ status: 'PENDENTE', agenteId: null }, '5'), false);
+});
+
+test('Agente modifica Pedido PENDENTE ou EM_ANALISE', () => {
+  assert.equal(agentePodeModificar({ status: 'PENDENTE' }), true);
+  assert.equal(agentePodeModificar({ status: 'EM_ANALISE' }), true);
+  assert.equal(agentePodeModificar({ status: 'APROVADO' }), false);
+});
+
+test('validarParecer exige justificativa e decisão', () => {
+  assert.deepEqual(validarParecer({ positivo: true, justificativa: 'Renda compatível.' }), {});
+  assert.ok(validarParecer({ positivo: true, justificativa: '  ' }).justificativa);
+  assert.ok(validarParecer({ justificativa: 'ok' }).positivo);
 });

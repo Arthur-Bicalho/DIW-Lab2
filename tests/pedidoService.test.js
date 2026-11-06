@@ -65,3 +65,69 @@ test('listarDoCliente devolve só os Pedidos do Cliente', async () => {
   await pedidoService.criar('8', { ...dados, automovelId: '2' }, hoje);
   assert.equal((await pedidoService.listarDoCliente('7')).length, 1);
 });
+
+const agente = { id: '5', perfil: 'BANCO' };
+
+test('iniciarAnalise leva o Pedido a EM_ANALISE e registra o Agente', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  const pedido = await pedidoService.iniciarAnalise(id, agente.id);
+  assert.equal(pedido.status, 'EM_ANALISE');
+  assert.equal(pedido.agenteId, '5');
+});
+
+test('iniciarAnalise recusa Pedido que não está PENDENTE', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  await pedidoService.iniciarAnalise(id, '5');
+  await assert.rejects(pedidoService.iniciarAnalise(id, '6'), ErroValidacao);
+});
+
+test('avaliar com Parecer positivo aprova e grava o Parecer', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  await pedidoService.iniciarAnalise(id, '5');
+  const pedido = await pedidoService.avaliar(id, '5', { positivo: true, justificativa: 'Renda compatível.' }, hoje);
+  assert.equal(pedido.status, 'APROVADO');
+  assert.deepEqual(pedido.parecer, { positivo: true, justificativa: 'Renda compatível.', data: hoje });
+});
+
+test('avaliar com Parecer negativo reprova', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  await pedidoService.iniciarAnalise(id, '5');
+  const pedido = await pedidoService.avaliar(id, '5', { positivo: false, justificativa: 'Renda insuficiente.' }, hoje);
+  assert.equal(pedido.status, 'REPROVADO');
+});
+
+test('avaliar recusa outro Agente e Parecer sem justificativa', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  await pedidoService.iniciarAnalise(id, '5');
+  await assert.rejects(pedidoService.avaliar(id, '6', { positivo: true, justificativa: 'ok' }, hoje), ErroValidacao);
+  await assert.rejects(pedidoService.avaliar(id, '5', { positivo: true, justificativa: '' }, hoje), ErroValidacao);
+});
+
+test('modificarComoAgente altera Pedido EM_ANALISE e recusa APROVADO', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  await pedidoService.iniciarAnalise(id, '5');
+  const alterado = await pedidoService.modificarComoAgente(id, { ...dados, automovelId: '2' }, hoje);
+  assert.equal(alterado.automovelId, '2');
+  banco.pedidos[0].status = 'APROVADO';
+  await assert.rejects(pedidoService.modificarComoAgente(id, dados, hoje), ErroValidacao);
+});
+
+test('listar filtra por status', async () => {
+  await pedidoService.criar('7', dados, hoje);
+  await pedidoService.criar('8', { ...dados, automovelId: '2' }, hoje);
+  banco.pedidos[1].status = 'APROVADO';
+  assert.equal((await pedidoService.listar({ status: 'APROVADO' })).length, 1);
+  assert.equal((await pedidoService.listar()).length, 2);
+});
+
+test('avaliar exige a decisão do Parecer', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  await pedidoService.iniciarAnalise(id, '5');
+  await assert.rejects(pedidoService.avaliar(id, '5', { justificativa: 'ok' }, hoje), ErroValidacao);
+});
+
+test('modificarComoAgente altera Pedido PENDENTE', async () => {
+  const { id } = await pedidoService.criar('7', dados, hoje);
+  const alterado = await pedidoService.modificarComoAgente(id, { ...dados, dataFim: '2026-12-20' }, hoje);
+  assert.equal(alterado.dataFim, '2026-12-20');
+});

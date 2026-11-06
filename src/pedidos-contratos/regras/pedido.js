@@ -23,6 +23,25 @@ export function clientePodeCancelar(pedido) {
   return podeTransitar(pedido.status, S.CANCELADO);
 }
 
+export function agentePodeIniciarAnalise(pedido) {
+  return podeTransitar(pedido.status, S.EM_ANALISE);
+}
+
+export function agentePodeAvaliar(pedido, agenteId) {
+  return pedido.status === S.EM_ANALISE && pedido.agenteId === agenteId;
+}
+
+export function agentePodeModificar(pedido) {
+  return pedido.status === S.PENDENTE || pedido.status === S.EM_ANALISE;
+}
+
+export function validarParecer({ positivo, justificativa }) {
+  const erros = {};
+  if (typeof positivo !== 'boolean') erros.positivo = 'Escolha aprovar ou reprovar.';
+  if (!String(justificativa ?? '').trim()) erros.justificativa = 'Escreva a justificativa do parecer.';
+  return erros;
+}
+
 // As datas são strings ISO (aaaa-mm-dd), que se comparam corretamente como texto.
 export function validarPedido({ automovelId, dataInicio, dataFim }, hoje) {
   const erros = {};

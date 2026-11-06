@@ -41,23 +41,8 @@
           <h2 class="modal-title h5" id="titulo-modal">Novo pedido</h2>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
         </div>
-        <div class="modal-body row g-3">
-          <div class="col-12">
-            <label class="form-label" for="automovelId">Automóvel</label>
-            <select class="form-select" id="automovelId" name="automovelId" required aria-required="true" aria-describedby="erro-automovelId"></select>
-            <div class="invalid-feedback" id="erro-automovelId"></div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label" for="dataInicio">Início</label>
-            <input class="form-control" id="dataInicio" name="dataInicio" type="date" required aria-required="true" aria-describedby="erro-dataInicio">
-            <div class="invalid-feedback" id="erro-dataInicio"></div>
-          </div>
-          <div class="col-md-6">
-            <label class="form-label" for="dataFim">Término</label>
-            <input class="form-control" id="dataFim" name="dataFim" type="date" required aria-required="true" aria-describedby="erro-dataFim">
-            <div class="invalid-feedback" id="erro-dataFim"></div>
-          </div>
-        </div>
+        <div class="alertas-formulario px-3 pt-3" aria-live="polite"></div>
+        <div class="modal-body row g-3" id="campos"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
           <button type="submit" class="btn btn-primary">Salvar</button>

@@ -48,8 +48,8 @@ flowchart LR
 | Componente | Interface | Depende de |
 |------------|-----------|------------|
 | views | funções de inicialização por página | components, services, regras, sessao |
-| components | `navbar`, `guarda` (exigirAcesso), `formulario`, `camposCliente`, `entidadesEmpregadoras`: montam HTML Bootstrap e protegem páginas | alertas, sessao, regras/permissoes |
-| services | `clienteService` (CRUD), `usuarioService.entrar`, `pedidoService` (criar, modificar, cancelar), `automovelService` | regras, api |
+| components | `navbar`, `guarda` (exigirAcesso), `formulario`, `tabela`, `statusPedido`, `camposCliente`, `camposPedido`, `entidadesEmpregadoras`: montam HTML Bootstrap e protegem páginas | alertas, sessao, regras/permissoes |
+| services | `clienteService` (CRUD), `usuarioService.entrar`, `pedidoService` (criar, modificar, cancelar, iniciar análise, avaliar, listar por status), `automovelService` | regras, api |
 | regras | funções puras de validação, formatação, transição e permissão; `ErroValidacao` | models |
 | api.js | `requisitar(caminho, opcoes)` com tratamento de erro; `recurso(nome)` com filtro no cliente (ADR 0007) | Fetch API |
 | JSON Server | `/usuarios`, `/automoveis`, `/pedidos`, `/contratos` | db.json |

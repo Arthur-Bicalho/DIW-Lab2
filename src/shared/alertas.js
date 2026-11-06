@@ -1,5 +1,4 @@
-export function mostrarAlerta(mensagem, tipo = 'danger') {
-  const area = document.getElementById('alertas');
+export function mostrarAlerta(mensagem, tipo = 'danger', area = document.getElementById('alertas')) {
   const alerta = document.createElement('div');
   alerta.className = `alert alert-${tipo} alert-dismissible fade show`;
   alerta.setAttribute('role', 'alert');
@@ -12,5 +11,5 @@ export function mostrarAlerta(mensagem, tipo = 'danger') {
   fechar.setAttribute('aria-label', 'Fechar');
   alerta.append(fechar);
 
-  area.append(alerta);
+  area.replaceChildren(alerta);
 }
