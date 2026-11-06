@@ -18,7 +18,7 @@ test('podeAcessarPagina separa as páginas por perfil', () => {
 });
 
 test('paginaInicial leva cada perfil à sua página', () => {
-  assert.equal(paginaInicial('CLIENTE'), 'pedidos.html');
+  assert.equal(paginaInicial('CLIENTE'), 'meus-pedidos.html');
   assert.equal(paginaInicial('BANCO'), 'avaliacao.html');
 });
 

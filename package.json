@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "json-server db.json --static .",
-    "test": "node --test tests/"
+    "test": "node --test \"tests/**/*.test.js\""
   },
   "devDependencies": {
     "json-server": "1.0.0-beta.15"

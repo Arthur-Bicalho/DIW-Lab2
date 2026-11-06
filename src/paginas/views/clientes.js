@@ -1,5 +1,4 @@
 import { clienteService } from '../../pedidos-contratos/services/clienteService.js';
-import { ErroValidacao } from '../../pedidos-contratos/regras/erros.js';
 import { rendimentoTotal } from '../../pedidos-contratos/regras/cliente.js';
 import { formatarCpf, formatarMoeda } from '../../pedidos-contratos/regras/formatacao.js';
 import { mostrarAlerta } from '../../shared/alertas.js';
@@ -7,7 +6,7 @@ import { ehCliente, podeGerenciarCliente } from '../../pedidos-contratos/regras/
 import { encerrarSessao } from '../../shared/sessao.js';
 import { exigirAcesso } from '../components/guarda.js';
 import { montarNavbar } from '../components/navbar.js';
-import { limparErros, mostrarErros } from '../components/formulario.js';
+import { limparErros, mensagemDoErro, tratarErroDoFormulario } from '../components/formulario.js';
 import { lerCamposCliente, montarCamposCliente, preencherCamposCliente } from '../components/camposCliente.js';
 import { iniciarEntidadesEmpregadoras } from '../components/entidadesEmpregadoras.js';
 
@@ -88,7 +87,7 @@ async function excluir(cliente) {
     encerrarSessao();
     location.href = '/public/login.html';
   } catch (erro) {
-    mostrarAlerta(erro instanceof ErroValidacao ? Object.values(erro.erros)[0] : erro.message);
+    mostrarAlerta(mensagemDoErro(erro));
   }
 }
 
@@ -103,8 +102,7 @@ async function salvar(evento) {
     mostrarAlerta('Cliente salvo com sucesso.', 'success');
     await carregar();
   } catch (erro) {
-    if (erro instanceof ErroValidacao) mostrarErros(formulario, erro.erros);
-    else mostrarAlerta(erro.message);
+    tratarErroDoFormulario(formulario, erro);
   }
 }
 

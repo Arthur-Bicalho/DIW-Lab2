@@ -4,7 +4,7 @@ import { ehAgente } from '../../pedidos-contratos/regras/permissoes.js';
 export function montarNavbar(sessao) {
   const links = ehAgente(sessao.perfil)
     ? [['avaliacao.html', 'Pedidos'], ['clientes.html', 'Clientes']]
-    : [['pedidos.html', 'Meus pedidos'], ['clientes.html', 'Meus dados']];
+    : [['meus-pedidos.html', 'Meus pedidos'], ['clientes.html', 'Meus dados']];
 
   const nav = document.getElementById('navbar');
   nav.className = 'navbar navbar-expand navbar-dark bg-dark';

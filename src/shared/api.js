@@ -29,9 +29,11 @@ export async function requisitar(caminho, { metodo = 'GET', corpo } = {}) {
 export function recurso(nome) {
   const raiz = `/${nome}`;
   return {
-    listar(filtros = {}) {
-      const consulta = new URLSearchParams(filtros).toString();
-      return requisitar(consulta ? `${raiz}?${consulta}` : raiz);
+    // O JSON Server v1 compara filtros numéricos (?clienteId=1) com tipos estritos e
+    // não encontra ids em texto; por isso o filtro é aplicado aqui (ADR 0007).
+    async listar(filtros = {}) {
+      const itens = await requisitar(raiz);
+      return itens.filter((item) => Object.entries(filtros).every(([campo, valor]) => String(item[campo]) === String(valor)));
     },
     obter: (id) => requisitar(`${raiz}/${id}`),
     criar: (dados) => requisitar(raiz, { metodo: 'POST', corpo: dados }),

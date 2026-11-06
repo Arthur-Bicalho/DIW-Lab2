@@ -34,10 +34,9 @@ test('requisitar devolve null em resposta 204', async () => {
   assert.equal(await requisitar('/pedidos/1', { metodo: 'DELETE' }), null);
 });
 
-test('recurso.listar monta a query string dos filtros', async () => {
-  const chamadas = simularFetch(ok([]));
-  await recurso('usuarios').listar({ perfil: 'CLIENTE' });
-  assert.equal(chamadas[0].url, '/usuarios?perfil=CLIENTE');
+test('recurso.listar filtra no cliente comparando como texto', async () => {
+  simularFetch(ok([{ id: '1', clienteId: '1' }, { id: '2', clienteId: '2' }]));
+  assert.deepEqual(await recurso('pedidos').listar({ clienteId: 1 }), [{ id: '1', clienteId: '1' }]);
 });
 
 test('recurso.criar envia o corpo como JSON com POST', async () => {

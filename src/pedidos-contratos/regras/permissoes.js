@@ -19,7 +19,7 @@ export function podeAcessarPagina(perfil, pagina) {
 }
 
 export function paginaInicial(perfil) {
-  return ehAgente(perfil) ? 'avaliacao.html' : 'pedidos.html';
+  return ehAgente(perfil) ? 'avaliacao.html' : 'meus-pedidos.html';
 }
 
 export function podeGerenciarCliente(sessao, clienteId) {
