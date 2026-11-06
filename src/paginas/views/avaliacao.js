@@ -6,6 +6,7 @@ import {
   agentePodeAvaliar, agentePodeIniciarAnalise, agentePodeModificar,
 } from '../../pedidos-contratos/regras/pedido.js';
 import { agentePodeFirmarContrato } from '../../pedidos-contratos/regras/contrato.js';
+import { descricaoAutomovel } from '../../pedidos-contratos/regras/automovel.js';
 import { dataDeHoje, formatarData } from '../../pedidos-contratos/regras/formatacao.js';
 import { mostrarAlerta } from '../../shared/alertas.js';
 import { exigirAcesso } from '../components/guarda.js';
@@ -16,7 +17,7 @@ import { criarDialogoContrato } from '../components/dialogoContrato.js';
 import { criarSeloStatus, rotuloStatus } from '../components/statusPedido.js';
 import { criarBotao, criarCelula } from '../components/tabela.js';
 import {
-  descricaoAutomovel, lerCamposPedido, montarCamposPedido, preencherCamposPedido,
+  lerCamposPedido, montarCamposPedido, preencherCamposPedido,
 } from '../components/camposPedido.js';
 
 const sessao = exigirAcesso('avaliacao');

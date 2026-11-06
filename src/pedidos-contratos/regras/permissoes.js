@@ -3,6 +3,7 @@ import { PERFIS } from '../models/constantes.js';
 const PAGINAS_POR_PERFIL = {
   clientes: [PERFIS.CLIENTE, PERFIS.EMPRESA, PERFIS.BANCO],
   pedidos: [PERFIS.CLIENTE],
+  catalogo: [PERFIS.CLIENTE],
   avaliacao: [PERFIS.EMPRESA, PERFIS.BANCO],
 };
 

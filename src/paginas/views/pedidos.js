@@ -1,8 +1,9 @@
 import { pedidoService } from '../../pedidos-contratos/services/pedidoService.js';
 import { contratoService } from '../../pedidos-contratos/services/contratoService.js';
 import { automovelService } from '../../pedidos-contratos/services/automovelService.js';
-import { clientePodeCancelar, clientePodeModificar } from '../../pedidos-contratos/regras/pedido.js';
+import { automovelDisponivel, clientePodeCancelar, clientePodeModificar } from '../../pedidos-contratos/regras/pedido.js';
 import { descreverContrato } from '../../pedidos-contratos/regras/contrato.js';
+import { descricaoAutomovel } from '../../pedidos-contratos/regras/automovel.js';
 import { dataDeHoje, formatarData } from '../../pedidos-contratos/regras/formatacao.js';
 import { mostrarAlerta } from '../../shared/alertas.js';
 import { criarBotao, criarCelula } from '../components/tabela.js';
@@ -11,7 +12,7 @@ import { montarNavbar } from '../components/navbar.js';
 import { limparErros, mensagemDoErro, tratarErroDoFormulario } from '../components/formulario.js';
 import { criarSeloStatus } from '../components/statusPedido.js';
 import {
-  descricaoAutomovel, lerCamposPedido, montarCamposPedido, preencherCamposPedido,
+  lerCamposPedido, montarCamposPedido, preencherCamposPedido,
 } from '../components/camposPedido.js';
 
 const sessao = exigirAcesso('pedidos');
@@ -71,13 +72,34 @@ async function carregar() {
   }
 }
 
-function abrirModal(pedido = null) {
+function abrirModal(pedido = null, automovelId = null) {
   idEmEdicao = pedido?.id ?? null;
   tituloModal.textContent = pedido ? 'Modificar pedido' : 'Novo pedido';
   limparErros(formulario);
   formulario.reset();
   preencherCamposPedido(formulario, automoveis, pedido, dataDeHoje());
+  if (automovelId) formulario.elements.automovelId.value = automovelId;
   modal.show();
+}
+
+// Vem do botão Alugar do catálogo; o parâmetro some da URL para não reabrir o modal ao recarregar.
+async function abrirPedidoDoCatalogo() {
+  const parametros = new URLSearchParams(location.search);
+  const id = parametros.get('automovel');
+  if (id === null) return;
+  history.replaceState(null, '', location.pathname);
+  try {
+    const existe = automoveis.some((a) => a.id === id);
+    const livre = existe && automovelDisponivel(id, await pedidoService.listar({ automovelId: id }));
+    if (!livre) {
+      mostrarAlerta(existe
+        ? 'O automóvel escolhido não está disponível no momento. Escolha outro no pedido.'
+        : 'O automóvel escolhido não foi encontrado. Escolha outro no pedido.', 'warning');
+    }
+    abrirModal(null, livre ? id : null);
+  } catch (erro) {
+    mostrarAlerta(erro.message);
+  }
 }
 
 async function cancelar(pedido) {
@@ -85,7 +107,7 @@ async function cancelar(pedido) {
   try {
     await pedidoService.cancelarDoCliente(pedido.id, sessao.id);
     mostrarAlerta('Pedido cancelado.', 'success');
-    await carregar();
+    await carregar().then(abrirPedidoDoCatalogo);
   } catch (erro) {
     mostrarAlerta(mensagemDoErro(erro));
   }
@@ -100,11 +122,11 @@ formulario.addEventListener('submit', async (evento) => {
     else await pedidoService.criar(sessao.id, dados, dataDeHoje());
     modal.hide();
     mostrarAlerta('Pedido salvo com sucesso.', 'success');
-    await carregar();
+    await carregar().then(abrirPedidoDoCatalogo);
   } catch (erro) {
     tratarErroDoFormulario(formulario, erro);
   }
 });
 
 document.getElementById('novo-pedido').addEventListener('click', () => abrirModal());
-carregar();
+carregar().then(abrirPedidoDoCatalogo);

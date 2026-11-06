@@ -1,3 +1,5 @@
+import { descricaoAutomovel } from '../../pedidos-contratos/regras/automovel.js';
+
 const CAMPOS_DATA = [
   { nome: 'dataInicio', rotulo: 'Início' },
   { nome: 'dataFim', rotulo: 'Término' },
@@ -20,8 +22,6 @@ export function montarCamposPedido(container) {
     `<input class="form-control" id="${nome}" name="${nome}" type="date" required aria-required="true" aria-describedby="erro-${nome}">`));
   container.append(seletor, ...datas);
 }
-
-export const descricaoAutomovel = (a) => `${a.marca} ${a.modelo} ${a.ano} (${a.placa})`;
 
 export function preencherCamposPedido(formulario, automoveis, pedido, hoje) {
   const seletor = formulario.elements.automovelId;

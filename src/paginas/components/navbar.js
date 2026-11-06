@@ -4,16 +4,22 @@ import { ehAgente } from '../../pedidos-contratos/regras/permissoes.js';
 export function montarNavbar(sessao) {
   const links = ehAgente(sessao.perfil)
     ? [['avaliacao.html', 'Pedidos'], ['clientes.html', 'Clientes']]
-    : [['meus-pedidos.html', 'Meus pedidos'], ['clientes.html', 'Meus dados']];
+    : [['meus-pedidos.html', 'Meus pedidos'], ['catalogo.html', 'Catálogo'], ['clientes.html', 'Meus dados']];
 
   const nav = document.getElementById('navbar');
-  nav.className = 'navbar navbar-expand navbar-dark bg-dark';
+  nav.className = 'navbar navbar-expand-md navbar-dark bg-dark';
   nav.innerHTML = `
     <div class="container">
       <span class="navbar-brand">Aluguel de Carros</span>
-      <ul class="navbar-nav me-auto"></ul>
-      <span class="navbar-text me-3"></span>
-      <button type="button" class="btn btn-outline-light btn-sm" id="sair">Sair</button>
+      <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target="#menu-principal"
+        aria-controls="menu-principal" aria-expanded="false" aria-label="Abrir menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="menu-principal">
+        <ul class="navbar-nav me-auto"></ul>
+        <span class="navbar-text me-md-3 py-2"></span>
+        <div><button type="button" class="btn btn-outline-light btn-sm" id="sair">Sair</button></div>
+      </div>
     </div>`;
 
   const lista = nav.querySelector('ul');
