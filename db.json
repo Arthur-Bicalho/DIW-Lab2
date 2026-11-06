@@ -1,0 +1,65 @@
+{
+  "usuarios": [
+    {
+      "id": "1", "perfil": "CLIENTE", "nome": "Ana Souza", "email": "ana@email.com", "senha": "123456",
+      "rg": "MG-12.345.678", "cpf": "52998224725", "endereco": "Rua das Acácias, 120, Belo Horizonte - MG",
+      "profissao": "Engenheira civil",
+      "entidadesEmpregadoras": [
+        { "nome": "Construtora Horizonte", "rendimento": 9500 },
+        { "nome": "Consultoria Alfa", "rendimento": 2500 }
+      ]
+    },
+    {
+      "id": "2", "perfil": "CLIENTE", "nome": "Bruno Lima", "email": "bruno@email.com", "senha": "123456",
+      "rg": "MG-23.456.789", "cpf": "11144477735", "endereco": "Av. Brasil, 800, Contagem - MG",
+      "profissao": "Designer",
+      "entidadesEmpregadoras": [
+        { "nome": "Estúdio Pixel", "rendimento": 4800 }
+      ]
+    },
+    {
+      "id": "3", "perfil": "CLIENTE", "nome": "Carla Mendes", "email": "carla@email.com", "senha": "123456",
+      "rg": "MG-34.567.890", "cpf": "39053344705", "endereco": "Rua Bahia, 45, Betim - MG",
+      "profissao": "Médica",
+      "entidadesEmpregadoras": [
+        { "nome": "Hospital Santa Clara", "rendimento": 12000 },
+        { "nome": "Clínica Vida", "rendimento": 6000 },
+        { "nome": "Plantões Associados", "rendimento": 3000 }
+      ]
+    },
+    { "id": "4", "perfil": "EMPRESA", "nome": "Locadora Veloz", "email": "veloz@empresa.com", "senha": "123456" },
+    { "id": "5", "perfil": "BANCO", "nome": "Banco Horizonte", "email": "horizonte@banco.com", "senha": "123456" },
+    { "id": "6", "perfil": "BANCO", "nome": "Banco Meridional", "email": "meridional@banco.com", "senha": "123456" }
+  ],
+  "automoveis": [
+    { "id": "1", "matricula": "MAT-0001", "ano": 2023, "marca": "Fiat", "modelo": "Argo", "placa": "QWE1A23", "proprietario": { "tipo": "EMPRESA", "id": "4" } },
+    { "id": "2", "matricula": "MAT-0002", "ano": 2022, "marca": "Volkswagen", "modelo": "T-Cross", "placa": "RTY2B34", "proprietario": { "tipo": "BANCO", "id": "5" } },
+    { "id": "3", "matricula": "MAT-0003", "ano": 2024, "marca": "Chevrolet", "modelo": "Onix", "placa": "UIO3C45", "proprietario": { "tipo": "EMPRESA", "id": "4" } },
+    { "id": "4", "matricula": "MAT-0004", "ano": 2021, "marca": "Toyota", "modelo": "Corolla", "placa": "ASD4D56", "proprietario": { "tipo": "EMPRESA", "id": "4" } },
+    { "id": "5", "matricula": "MAT-0005", "ano": 2023, "marca": "Hyundai", "modelo": "HB20", "placa": "FGH5E67", "proprietario": { "tipo": "BANCO", "id": "5" } },
+    { "id": "6", "matricula": "MAT-0006", "ano": 2024, "marca": "Renault", "modelo": "Kwid", "placa": "JKL6F78", "proprietario": { "tipo": "EMPRESA", "id": "4" } }
+  ],
+  "pedidos": [
+    { "id": "1", "clienteId": "1", "automovelId": "1", "dataInicio": "2026-12-10", "dataFim": "2026-12-20", "status": "PENDENTE", "agenteId": null, "parecer": null },
+    { "id": "2", "clienteId": "2", "automovelId": "2", "dataInicio": "2026-12-01", "dataFim": "2026-12-15", "status": "EM_ANALISE", "agenteId": "5", "parecer": null },
+    {
+      "id": "3", "clienteId": "3", "automovelId": "3", "dataInicio": "2026-11-20", "dataFim": "2026-12-20", "status": "APROVADO", "agenteId": "4",
+      "parecer": { "positivo": true, "justificativa": "Rendimento mensal de R$ 21.000,00 compatível com o aluguel.", "data": "2026-11-04" }
+    },
+    {
+      "id": "4", "clienteId": "2", "automovelId": "4", "dataInicio": "2026-11-15", "dataFim": "2027-02-15", "status": "REPROVADO", "agenteId": "6",
+      "parecer": { "positivo": false, "justificativa": "Rendimento de R$ 4.800,00 insuficiente para o valor do aluguel.", "data": "2026-11-03" }
+    },
+    {
+      "id": "5", "clienteId": "1", "automovelId": "5", "dataInicio": "2026-11-01", "dataFim": "2027-01-31", "status": "CONTRATADO", "agenteId": "5",
+      "parecer": { "positivo": true, "justificativa": "Histórico de rendimentos adequado.", "data": "2026-10-28" }
+    },
+    { "id": "6", "clienteId": "3", "automovelId": "4", "dataInicio": "2026-10-10", "dataFim": "2026-10-20", "status": "CANCELADO", "agenteId": null, "parecer": null }
+  ],
+  "contratos": [
+    {
+      "id": "1", "pedidoId": "5", "agenteId": "5", "tipoPropriedade": "BANCO", "data": "2026-10-30",
+      "contratoCredito": { "bancoId": "5", "valor": 18000, "parcelas": 12, "taxaJurosMensal": 1.9 }
+    }
+  ]
+}

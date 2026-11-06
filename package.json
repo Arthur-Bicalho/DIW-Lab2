@@ -1,0 +1,14 @@
+{
+  "name": "aluguel-de-carros",
+  "version": "1.0.0",
+  "description": "Sistema de Aluguel de Carros - LAB02 de Desenvolvimento de Interfaces Web (PUC Minas)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "json-server db.json --static .",
+    "test": "node --test tests/"
+  },
+  "devDependencies": {
+    "json-server": "1.0.0-beta.15"
+  }
+}
