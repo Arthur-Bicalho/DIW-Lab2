@@ -15,6 +15,8 @@ flowchart TB
     end
     subgraph shared["src/shared"]
         api["api.js"]
+        local["armazenamento-local.js"]
+        modo["modo.js"]
         sessao["sessao.js"]
         alertas["alertas.js"]
     end
@@ -28,6 +30,8 @@ flowchart TB
     services --> models
     services --> api
     regras --> models
+    api --> local
+    api --> modo
 ```
 
 | Pacote | Conteúdo | Classes do diagrama de classes |
@@ -37,4 +41,4 @@ flowchart TB
 | `pedidos-contratos/services` | `clienteService`, `usuarioService`, `pedidoService`, `contratoService`, `automovelService`: operações sobre a API | Usuario, Cliente, Automovel, Pedido, Contrato |
 | `paginas/views` | Uma tela por arquivo | casos de uso UC01 a UC12 |
 | `paginas/components` | Navbar, guarda de rota, diálogos de avaliação e de contrato, tabela, selo de status, campos de Cliente e de Pedido, entidades empregadoras, erros de formulário | — |
-| `shared` | Fetch, sessão e alertas | — |
+| `shared` | `api.js` (Fetch), `armazenamento-local.js` (localStorage, usado na Vercel), `modo.js` (escolha do armazenamento), `sessao.js` e `alertas.js` | — |

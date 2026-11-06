@@ -23,6 +23,7 @@ flowchart LR
         end
         subgraph sh["src/shared"]
             api["api.js (Fetch)"]
+            loc["armazenamento-local.js"]
             ses["sessao.js (sessionStorage)"]
             alr["alertas.js"]
         end
@@ -40,6 +41,7 @@ flowchart LR
     comp --> alr
     svc --> reg
     svc --> api
+    api -. "modo local (Vercel)" .-> loc
     api -- "HTTP/JSON" --> js
     js --> db
     html -- "GET estático" --> js
@@ -51,17 +53,18 @@ flowchart LR
 | components | `navbar`, `guarda` (exigirAcesso), `formulario`, `dialogoAvaliacao`, `dialogoContrato`, `tabela`, `statusPedido`, `camposCliente`, `camposPedido`, `entidadesEmpregadoras`: montam HTML Bootstrap e protegem páginas | alertas, sessao, regras/permissoes |
 | services | `clienteService` (CRUD), `usuarioService.entrar`, `pedidoService` (criar, modificar, cancelar, iniciar análise, avaliar, listar por status), `contratoService` (firmar Contrato com Contrato de Crédito opcional), `automovelService` | regras, api |
 | regras | funções puras de validação, formatação, transição e permissão; `ErroValidacao` | models |
-| api.js | `requisitar(caminho, opcoes)` com tratamento de erro; `recurso(nome)` com filtro no cliente (ADR 0007) | Fetch API |
+| api.js | `requisitar(caminho, opcoes)` com tratamento de erro; `recurso(nome)` com filtro no cliente (ADR 0007), que delega a `recursoLocal` quando `modo.js` define `'local'` | Fetch API, armazenamento-local, modo |
+| armazenamento-local.js | `recursoLocal(nome)` com a mesma interface de `recurso` (listar, obter, criar, atualizar, remover) sobre o `localStorage`; `restaurarDadosDeExemplo()`; semente de `/db.json` (ADR 0010) | localStorage, Fetch API |
 | JSON Server | `/usuarios`, `/automoveis`, `/pedidos`, `/contratos` | db.json |
 
 ## Visão de implantação
 
-O diagrama acima descreve a execução local. A publicação na Vercel usa os mesmos componentes em outra implantação, descrita a seguir (ADR 0009).
+O diagrama acima descreve a execução local (cenário A). A publicação na Vercel usa os mesmos componentes do navegador, mas sem servidor de dados: `recurso()` escolhe `recursoLocal` e os dados ficam no `localStorage` (ADR 0010).
 
 ```mermaid
 flowchart TB
     subgraph local["Cenário A: local (npm start)"]
-        nav1["Navegador"]
+        nav1["Navegador: api.js (Fetch)"]
         subgraph proc["Processo Node: json-server db.json --static ."]
             js1["JSON Server (REST + arquivos estáticos)"]
         end
@@ -70,30 +73,26 @@ flowchart TB
         js1 -- "lê e grava" --> db1
     end
 
-    subgraph vercel["Cenário B: Vercel"]
-        nav2["Navegador"]
-        subgraph build["Build: scripts/build.js"]
-            fonte["public/ e src/"]
+    subgraph vercel["Cenário B: Vercel (estático)"]
+        subgraph build["Build: ARMAZENAMENTO=local npm run build"]
+            fonte["public/, src/ e db.json"]
             dist["dist/"]
-            fonte -- "cópia" --> dist
+            fonte -- "cópia + modo.js 'local'" --> dist
         end
         cdn["CDN estática da Vercel"]
-        rw{"rewrites do vercel.json"}
-        subgraph fn["Vercel Function: api/index.js"]
-            api2["servidor/api.js: JSON Server em memória"]
+        subgraph nav2["Navegador"]
+            rl["recursoLocal (armazenamento-local.js)"]
+            ls[("localStorage: aluguel:v1:*")]
         end
-        seed[("db.json (semente, somente leitura)")]
         dist -- "publicado" --> cdn
-        nav2 -- "GET /public/*.html e /src/*.js" --> cdn
-        nav2 -- "/usuarios, /automoveis, /pedidos, /contratos" --> rw
-        rw -- "destino /api" --> api2
-        seed -- "carga inicial em cada instância" --> api2
+        cdn -- "páginas, scripts e /db.json (semente)" --> nav2
+        rl -- "lê e grava" --> ls
     end
 ```
 
 | Aspecto | A: local | B: Vercel |
 |---------|----------|-----------|
-| Processo | um processo Node contínuo (`npm start`) | Vercel Function efêmera, criada sob demanda |
-| Persistência | `db.json` em disco, gravado a cada alteração | memória da instância; `db.json` é só a semente e volta ao estado inicial em cold start |
+| Processo | um processo Node contínuo (`npm start`) | nenhum: só arquivos estáticos na CDN |
+| Persistência | `db.json` em disco, compartilhado por todos os navegadores | `localStorage` de cada navegador; `/db.json` é só a semente da primeira leitura |
 | Arquivos estáticos | servidos pelo JSON Server (`--static .`) | servidos pela CDN a partir de `dist/` |
-| Para o usuário | dados permanecem entre execuções | dados de demonstração; podem sumir ou diferir entre instâncias |
+| Para o usuário | dados permanecem entre execuções e são comuns a todos | cada visitante vê só os próprios dados; limpar os dados do site apaga tudo |

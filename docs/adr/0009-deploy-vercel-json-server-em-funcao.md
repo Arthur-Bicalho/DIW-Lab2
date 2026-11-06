@@ -1,6 +1,6 @@
 # Deploy na Vercel com JSON Server em função
 
-Status: aceita
+Status: substituída pela 0010
 
 A Vercel não mantém um processo ativo nem oferece disco gravável, então `json-server db.json --static .` não roda lá. A API passa a ser uma Vercel Function (`api/index.js`) que cria o mesmo JSON Server em memória (`servidor/api.js`), usando `db.json` como semente; os rewrites do `vercel.json` levam `/usuarios`, `/automoveis`, `/pedidos` e `/contratos` a ela. Um build (`scripts/build.js`) copia `public/` e `src/` para `dist/`, servido pela CDN, o que mantém as URLs e os imports absolutos e, portanto, os diagramas de pacotes. Descartados: banco externo (Upstash Redis, Vercel Blob), por trazer dependência nova fora da stack obrigatória; API simulada no `localStorage`, pois perderia o servidor central e cada visitante veria só os próprios dados; e reorganizar `src/` para a CDN, que quebraria os diagramas e os imports absolutos. Consequência: os dados voltam à semente a cada cold start e instâncias diferentes podem ter estados diferentes (um cadastro numa e o login em outra podem falhar). Serve para demonstração; persistir de verdade exigiria um banco externo. Os rewrites preservam o caminho original, mas a Vercel anexa seus parâmetros nomeados (`recurso`, `resto`) à query string; o JSON Server os trataria como filtros e devolveria `[]` nas listagens, então a Function os remove com `restaurarUrl` (`servidor/url.js`) antes de entregar a requisição.
 
