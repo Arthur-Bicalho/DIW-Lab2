@@ -36,5 +36,5 @@ flowchart TB
 | `pedidos-contratos/regras` | `cliente.js` (CPF, campos, limite de 3 entidades, rendimento total), `formatacao.js` (CPF, moeda, dígitos), `erros.js` (ErroValidacao), `permissoes.js` (acesso a páginas por perfil), `pedido.js` (transições de status, validação de período, disponibilidade do Automóvel, ações do Agente e validação do Parecer), `contrato.js` (firmar Contrato, Tipo de Propriedade, Contrato de Crédito) | Cliente, EntidadeEmpregadora, Pedido, Parecer |
 | `pedidos-contratos/services` | `clienteService`, `usuarioService`, `pedidoService`, `contratoService`, `automovelService`: operações sobre a API | Usuario, Cliente, Automovel, Pedido, Contrato |
 | `paginas/views` | Uma tela por arquivo | casos de uso UC01 a UC12 |
-| `paginas/components` | Navbar, guarda de rota, tabela, selo de status, campos de Cliente e de Pedido, entidades empregadoras, erros de formulário | — |
+| `paginas/components` | Navbar, guarda de rota, diálogos de avaliação e de contrato, tabela, selo de status, campos de Cliente e de Pedido, entidades empregadoras, erros de formulário | — |
 | `shared` | Fetch, sessão e alertas | — |
