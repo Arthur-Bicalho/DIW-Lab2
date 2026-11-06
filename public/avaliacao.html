@@ -97,6 +97,53 @@
     </div>
   </div>
 
+  <div class="modal fade" id="modal-contrato" tabindex="-1" aria-labelledby="titulo-modal-contrato" aria-hidden="true">
+    <div class="modal-dialog">
+      <form class="modal-content" id="form-contrato" novalidate>
+        <div class="modal-header">
+          <h2 class="modal-title h5" id="titulo-modal-contrato">Firmar contrato</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        </div>
+        <div class="alertas-formulario px-3 pt-3" aria-live="polite"></div>
+        <div class="modal-body row g-3">
+          <div class="col-12">
+            <label class="form-label" for="tipoPropriedade">Propriedade do automóvel</label>
+            <select class="form-select" id="tipoPropriedade" name="tipoPropriedade" required aria-required="true" aria-describedby="erro-tipoPropriedade"></select>
+            <div class="invalid-feedback" id="erro-tipoPropriedade"></div>
+          </div>
+          <div id="area-credito" class="col-12" hidden>
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox" id="com-credito" name="comCredito">
+              <label class="form-check-label" for="com-credito">Conceder contrato de crédito</label>
+            </div>
+            <fieldset id="campos-credito" class="row g-3" hidden>
+              <legend class="h6">Contrato de crédito</legend>
+              <div class="col-12">
+                <label class="form-label" for="valor">Valor (R$)</label>
+                <input class="form-control" id="valor" name="valor" type="number" min="0" step="0.01" aria-describedby="erro-valor">
+                <div class="invalid-feedback" id="erro-valor"></div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="parcelas">Parcelas</label>
+                <input class="form-control" id="parcelas" name="parcelas" type="number" min="1" step="1" aria-describedby="erro-parcelas">
+                <div class="invalid-feedback" id="erro-parcelas"></div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label" for="taxaJurosMensal">Juros ao mês (%)</label>
+                <input class="form-control" id="taxaJurosMensal" name="taxaJurosMensal" type="number" min="0" step="0.01" aria-describedby="erro-taxaJurosMensal">
+                <div class="invalid-feedback" id="erro-taxaJurosMensal"></div>
+              </div>
+            </fieldset>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn btn-primary">Firmar contrato</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module" src="/src/paginas/views/avaliacao.js"></script>
 </body>
