@@ -4,6 +4,8 @@ const PREFIXO = 'aluguel:v1:';
 
 // Uma única requisição ao seed, compartilhada por chamadas concorrentes.
 let semente = null;
+// O catálogo de automóveis é dado de referência: sincroniza com a semente uma vez por carga de página.
+let sincronizacaoAutomoveis = null;
 
 function armazenamento() {
   try {
@@ -36,7 +38,40 @@ function carregarSemente() {
   return semente;
 }
 
+function mesclarAutomoveis(locais, daSemente) {
+  const porId = new Map(locais.map((item) => [String(item.id), item]));
+  const idsDaSemente = new Set(daSemente.map((item) => String(item.id)));
+  const mesclados = daSemente.map((carro) => {
+    const local = porId.get(String(carro.id));
+    // o contrato firmado altera o proprietário no navegador: o valor local prevalece
+    return local && local.proprietario !== undefined ? { ...carro, proprietario: local.proprietario } : carro;
+  });
+  return [...mesclados, ...locais.filter((item) => !idsDaSemente.has(String(item.id)))];
+}
+
+async function executarSincronizacaoAutomoveis() {
+  const bruto = armazenamento().getItem(PREFIXO + 'automoveis');
+  if (bruto === null) return; // ausente: o carregamento normal da semente cuida
+  try {
+    const locais = JSON.parse(bruto);
+    const dados = await carregarSemente();
+    if (!Array.isArray(locais) || !Array.isArray(dados.automoveis)) return;
+    const resultado = JSON.stringify(mesclarAutomoveis(locais, dados.automoveis));
+    // relê: outra escrita pode ter ocorrido durante a espera pela semente
+    if (armazenamento().getItem(PREFIXO + 'automoveis') !== bruto) return;
+    if (resultado !== bruto) armazenamento().setItem(PREFIXO + 'automoveis', resultado);
+  } catch {
+    // sem semente (offline, 404) ou sem espaço para gravar: segue com a lista já gravada
+  }
+}
+
+function sincronizarAutomoveis() {
+  sincronizacaoAutomoveis ??= executarSincronizacaoAutomoveis();
+  return sincronizacaoAutomoveis;
+}
+
 async function lerColecao(nome) {
+  if (nome === 'automoveis') await sincronizarAutomoveis();
   const bruto = armazenamento().getItem(PREFIXO + nome);
   if (bruto !== null) {
     try {
@@ -108,4 +143,5 @@ export function restaurarDadosDeExemplo() {
   }
   for (const chave of chaves) storage.removeItem(chave);
   semente = null;
+  sincronizacaoAutomoveis = null;
 }
