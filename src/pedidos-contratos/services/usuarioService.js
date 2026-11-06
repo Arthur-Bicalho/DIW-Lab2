@@ -4,6 +4,8 @@ import { ErroValidacao } from '../regras/erros.js';
 const usuarios = recurso('usuarios');
 
 export const usuarioService = {
+  listar: () => usuarios.listar(),
+
   async entrar(email, senha) {
     const [usuario] = await usuarios.listar({ email: email.trim().toLowerCase() });
     if (!usuario || usuario.senha !== senha) {

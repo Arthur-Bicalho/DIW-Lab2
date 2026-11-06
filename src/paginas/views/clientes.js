@@ -4,6 +4,7 @@ import { formatarCpf, formatarMoeda } from '../../pedidos-contratos/regras/forma
 import { mostrarAlerta } from '../../shared/alertas.js';
 import { ehCliente, podeGerenciarCliente } from '../../pedidos-contratos/regras/permissoes.js';
 import { encerrarSessao } from '../../shared/sessao.js';
+import { criarBotao, criarCelula } from '../components/tabela.js';
 import { exigirAcesso } from '../components/guarda.js';
 import { montarNavbar } from '../components/navbar.js';
 import { limparErros, mensagemDoErro, tratarErroDoFormulario } from '../components/formulario.js';
@@ -25,31 +26,16 @@ let idEmEdicao = null;
 const clienteLogado = ehCliente(sessao.perfil);
 if (clienteLogado) document.getElementById('titulo-pagina').textContent = 'Meus dados';
 
-function celula(texto) {
-  const td = document.createElement('td');
-  td.textContent = texto;
-  return td;
-}
-
-function botao(texto, classe, aoClicar) {
-  const b = document.createElement('button');
-  b.type = 'button';
-  b.className = `btn btn-sm ${classe}`;
-  b.textContent = texto;
-  b.addEventListener('click', aoClicar);
-  return b;
-}
-
 function linhaDoCliente(cliente) {
   const tr = document.createElement('tr');
-  tr.append(celula(cliente.nome), celula(formatarCpf(cliente.cpf)), celula(cliente.profissao), celula(formatarMoeda(rendimentoTotal(cliente.entidadesEmpregadoras))));
+  tr.append(criarCelula(cliente.nome), criarCelula(formatarCpf(cliente.cpf)), criarCelula(cliente.profissao), criarCelula(formatarMoeda(rendimentoTotal(cliente.entidadesEmpregadoras))));
 
   const acoes = document.createElement('td');
   acoes.className = 'text-end text-nowrap';
   if (podeGerenciarCliente(sessao, cliente.id)) {
     acoes.append(
-      botao('Editar', 'btn-outline-primary me-1', () => abrirEdicao(cliente.id)),
-      botao('Excluir', 'btn-outline-danger', () => excluir(cliente)),
+      criarBotao('Editar', 'btn-outline-primary me-1', () => abrirEdicao(cliente.id)),
+      criarBotao('Excluir', 'btn-outline-danger', () => excluir(cliente)),
     );
   }
   tr.append(acoes);

@@ -7,9 +7,11 @@ const CLASSES = {
   CANCELADO: 'text-bg-dark',
 };
 
+export const rotuloStatus = (status) => status.replace('_', ' ');
+
 export function criarSeloStatus(status) {
   const selo = document.createElement('span');
   selo.className = `badge ${CLASSES[status]}`;
-  selo.textContent = status.replace('_', ' ');
+  selo.textContent = rotuloStatus(status);
   return selo;
 }

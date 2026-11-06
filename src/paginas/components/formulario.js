@@ -8,7 +8,9 @@ export function limparErros(formulario) {
   });
   formulario.querySelectorAll('.invalid-feedback').forEach((e) => {
     e.textContent = '';
+    e.classList.remove('d-block');
   });
+  formulario.querySelector('.alertas-formulario')?.replaceChildren();
 }
 
 export function mostrarErros(formulario, erros) {
@@ -32,5 +34,5 @@ export function mensagemDoErro(erro) {
 // Erros de campo vão para o formulário; os demais viram alerta.
 export function tratarErroDoFormulario(formulario, erro) {
   if (erro instanceof ErroValidacao && !erro.erros.geral) mostrarErros(formulario, erro.erros);
-  else mostrarAlerta(mensagemDoErro(erro));
+  else mostrarAlerta(mensagemDoErro(erro), 'danger', formulario.querySelector('.alertas-formulario') ?? undefined);
 }
