@@ -33,7 +33,7 @@ Registro por entrega. Os links dos Pull Requests estão em https://github.com/Ar
 | 17 | Armazenamento no navegador; remoção da Function | direto na `main` (Issue #33) | `a8ca298`, `77c0b40` | sem Pull Request, por erro de processo | ADR 0010 |
 | 18 | Catálogo de automóveis com filtros e fotos | `feature/catalogo-automoveis` | `91ef83d`, `3905e9f` | [#38](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/38) | ADR 0011 |
 | 19 | Frota ampliada (66 automóveis, uma foto por carro) | `feature/frota-ampliada` | `4fb53e5`, `b455a2c` | [#39](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/39) | créditos das imagens |
-| 20 | README completo, deploy estático e progresso | `docs/readme-deploy` (Issue #37) | | PR desta entrega | |
+| 20 | README completo, deploy estático e progresso | `docs/readme-deploy` (Issue #37) | | [#40](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/40) | |
 
 A etapa "login sem cadastro" (Issue #34) foi proposta e cancelada para manter o RF01; não houve código nem Pull Request.
 

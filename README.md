@@ -516,6 +516,6 @@ Exceção registrada: os commits `a8ca298` e `77c0b40` (armazenamento no navegad
 | sem PR | `main` (commits `a8ca298` e `77c0b40`) | Armazenamento no navegador no build do Vercel, remoção da Function, `api/` e `servidor/` (Issue #33, ADR 0010); entrou direto na `main` por erro de processo | pacotes e componentes |
 | [#38](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/38) | `feature/catalogo-automoveis` | Catálogo de automóveis com filtros, foto e paginação; classificação (ADR 0011) | casos de uso, classes, pacotes e componentes; histórias |
 | [#39](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/39) | `feature/frota-ampliada` | Frota de 66 automóveis, modelos de 2019 a 2024 (regra de inclusão: no máximo 10 anos, 2016 em diante), uma foto por carro, créditos das imagens | nenhum |
-| PR desta entrega | `docs/readme-deploy` | README completo, deploy estático, PROGRESSO.md, capturas do catálogo (Issue #37) | nenhum |
+| [#40](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/40) | `docs/readme-deploy` | README completo, deploy estático, PROGRESSO.md, capturas do catálogo (Issue #37) | nenhum |
 
 A etapa "login sem cadastro" (Issue #34) foi proposta e cancelada para manter o RF01; não houve código nem Pull Request.
