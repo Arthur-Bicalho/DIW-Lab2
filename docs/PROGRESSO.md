@@ -46,7 +46,7 @@ Registro por entrega. Os links dos Pull Requests estão em https://github.com/Ar
 | Lógica pura e testada | `src/pedidos-contratos/regras`, `tests/` (77 testes) |
 | Login simulado declarado | README, tela de login, [ADR 0004](adr/0004-login-simulado-e-perfis.md) |
 | Responsivo e acessível | Bootstrap, `label` e `aria-*` nos formulários, sem JS inline |
-| db.json com dados reais de exemplo | 3 clientes, 1 empresa, 2 bancos, 6 automóveis, 6 pedidos em todos os status, 1 contrato |
+| db.json com dados reais de exemplo | 3 clientes, 1 empresa, 2 bancos, 66 automóveis, 6 pedidos em todos os status, 1 contrato |
 | Modelagem: casos de uso, histórias, classes, pacotes, componentes | `docs/diagramas/`, `docs/historias-de-usuario.md` |
 | Glossário e ADRs | `GLOSSARY.md`, `docs/adr/` |
 
