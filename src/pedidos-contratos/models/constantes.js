@@ -20,3 +20,9 @@ export const TIPOS_PROPRIEDADE = Object.freeze({
 });
 
 export const MAX_ENTIDADES_EMPREGADORAS = 3;
+
+export const STATUS_EM_ANDAMENTO = Object.freeze([
+  STATUS_PEDIDO.PENDENTE,
+  STATUS_PEDIDO.EM_ANALISE,
+  STATUS_PEDIDO.APROVADO,
+]);
