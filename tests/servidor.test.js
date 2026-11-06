@@ -194,3 +194,36 @@ test('em produção, sem public/ no cwd, o JSON Server falha com ENOENT (causa d
   assert.notEqual(filho.status, 0);
   assert.match(filho.stderr, /ENOENT.*public/);
 });
+
+// Formato real observado na Vercel: o caminho original é preservado e os
+// parâmetros nomeados do rewrite são anexados à query string.
+test('a Function lista pedidos, usuários, automóveis e contratos com a query injetada pelos rewrites', async () => {
+  const base = await subir(handler);
+  for (const colecao of ['pedidos', 'usuarios', 'automoveis', 'contratos']) {
+    const lista = await (await fetch(`${base}/${colecao}?recurso=${colecao}`)).json();
+    assert.ok(lista.length > 0, `${colecao} não deveria vir vazia`);
+  }
+});
+
+test('a Function filtra por query real e ignora os parâmetros dos rewrites', async () => {
+  const base = await subir(handler);
+  const usuarios = await (await fetch(`${base}/usuarios?email=ana%40email.com&recurso=usuarios`)).json();
+  assert.equal(usuarios.length, 1);
+  assert.equal(usuarios[0].email, 'ana@email.com');
+});
+
+test('a Function devolve o item com a query injetada pelos rewrites', async () => {
+  const base = await subir(handler);
+  const resposta = await fetch(`${base}/pedidos/5?recurso=pedidos&resto=5`);
+  assert.equal(resposta.status, 200);
+  assert.equal((await resposta.json()).id, '5');
+});
+
+test('restaurarUrl remove recurso e resto e preserva o restante', async () => {
+  const { restaurarUrl } = await import('../servidor/url.js');
+  assert.equal(restaurarUrl('/pedidos?recurso=pedidos'), '/pedidos');
+  assert.equal(restaurarUrl('/pedidos/5?recurso=pedidos&resto=5'), '/pedidos/5');
+  assert.equal(restaurarUrl('/usuarios?email=ana%40email.com&recurso=usuarios'), '/usuarios?email=ana%40email.com');
+  assert.equal(restaurarUrl('/usuarios?_sort=nome&_limit=2'), '/usuarios?_sort=nome&_limit=2');
+  assert.equal(restaurarUrl('/pedidos'), '/pedidos');
+});
