@@ -36,9 +36,9 @@ flowchart TB
 
 | Pacote | Conteúdo | Classes do diagrama de classes |
 |--------|----------|-------------------------------|
-| `pedidos-contratos/models` | Constantes de perfis, status e tipos de propriedade | Usuario, Pedido, Contrato (valores permitidos) |
-| `pedidos-contratos/regras` | `cliente.js` (CPF, campos, limite de 3 entidades, rendimento total), `formatacao.js` (CPF, moeda, dígitos), `erros.js` (ErroValidacao), `permissoes.js` (acesso a páginas por perfil), `pedido.js` (transições de status, validação de período, disponibilidade do Automóvel, ações do Agente e validação do Parecer), `contrato.js` (firmar Contrato, Tipo de Propriedade, Contrato de Crédito) | Cliente, EntidadeEmpregadora, Pedido, Parecer |
+| `pedidos-contratos/models` | Constantes de perfis, status, tipos de propriedade, categorias e segmentos de Automóvel, ano mínimo e itens por página | Usuario, Pedido, Contrato (valores permitidos) |
+| `pedidos-contratos/regras` | `cliente.js` (CPF, campos, limite de 3 entidades, rendimento total), `formatacao.js` (CPF, moeda, dígitos), `erros.js` (ErroValidacao), `permissoes.js` (acesso a páginas por perfil), `automovel.js` (filtro do catálogo, anos e categorias disponíveis, paginação, descrição do Automóvel), `pedido.js` (transições de status, validação de período, disponibilidade do Automóvel, ações do Agente e validação do Parecer), `contrato.js` (firmar Contrato, Tipo de Propriedade, Contrato de Crédito) | Cliente, EntidadeEmpregadora, Pedido, Parecer |
 | `pedidos-contratos/services` | `clienteService`, `usuarioService`, `pedidoService`, `contratoService`, `automovelService`: operações sobre a API | Usuario, Cliente, Automovel, Pedido, Contrato |
-| `paginas/views` | Uma tela por arquivo | casos de uso UC01 a UC12 |
-| `paginas/components` | Navbar, guarda de rota, diálogos de avaliação e de contrato, tabela, selo de status, campos de Cliente e de Pedido, entidades empregadoras, erros de formulário | — |
+| `paginas/views` | Uma tela por arquivo | casos de uso UC01 a UC13 (inclui `catalogo.js`) |
+| `paginas/components` | Navbar, guarda de rota, cartão de automóvel, foto ampliada, paginação, diálogos de avaliação e de contrato, tabela, selo de status, campos de Cliente e de Pedido, entidades empregadoras, erros de formulário | — |
 | `shared` | `api.js` (Fetch), `armazenamento-local.js` (localStorage, usado na Vercel), `modo.js` (escolha do armazenamento), `sessao.js` e `alertas.js` | — |

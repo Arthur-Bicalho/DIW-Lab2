@@ -24,6 +24,7 @@ flowchart LR
         UC10([UC10 Avaliar Pedido e emitir Parecer])
         UC11([UC11 Firmar Contrato])
         UC12([UC12 Conceder Contrato de Crédito])
+        UC13([UC13 Consultar catálogo de automóveis com filtros])
     end
 
     Cliente --- UC01
@@ -33,6 +34,7 @@ flowchart LR
     Cliente --- UC05
     Cliente --- UC06
     Cliente --- UC07
+    Cliente --- UC13
     Agente --- UC02
     Agente --- UC08
     Agente --- UC09
@@ -41,4 +43,5 @@ flowchart LR
     Banco --- UC12
     UC10 -. inclui .-> UC08
     UC12 -. estende .-> UC11
+    UC04 -. inclui .-> UC13
 ```

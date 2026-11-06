@@ -32,6 +32,10 @@ classDiagram
         +marca
         +modelo
         +placa
+        +categoria
+        +segmento
+        +eletrico
+        +imagem
         +proprietario
     }
     class Pedido {

@@ -38,6 +38,22 @@ _Avoid_: Salário, renda
 Veículo identificado por matrícula, ano, marca, modelo e placa, que pode ser alugado.
 _Avoid_: Carro, veículo
 
+**Categoria**:
+Tipo de carroceria do Automóvel: Hatch, Sedan, SUV, Picape, Minivan ou Esportivo.
+_Avoid_: Tipo, classe
+
+**Segmento**:
+Faixa de mercado do Automóvel: Popular ou Luxo.
+_Avoid_: Nível, classe
+
+**Elétrico**:
+Indica que o Automóvel é movido a eletricidade; combina com qualquer Segmento.
+_Avoid_: Ecológico, híbrido
+
+**Catálogo**:
+Página em que o Cliente consulta os Automóveis com foto e filtros e escolhe qual alugar.
+_Avoid_: Vitrine, listagem
+
 **Pedido**:
 Solicitação de um Cliente para alugar um Automóvel por um período.
 _Avoid_: Solicitação, requisição, reserva

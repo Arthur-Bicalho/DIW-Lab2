@@ -28,6 +28,15 @@ Como Cliente, quero pedir o aluguel de um Automóvel por um período, para usá-
 - A data final deve ser posterior à inicial e a inicial não pode estar no passado.
 - O Pedido nasce PENDENTE.
 
+## HU12 – Escolher um automóvel no catálogo (RF03)
+Como Cliente, quero ver os automóveis com foto e filtrá-los, para escolher o carro que vou alugar.
+- Posso filtrar por marca ou modelo (sem diferenciar maiúsculas nem acentos), ano, categoria, segmento (Popular ou Luxo) e somente elétricos; os filtros combinam entre si e a lista se atualiza ao digitar ou alterar.
+- Cada automóvel mostra foto, ano, selos de categoria, segmento e elétrico, e se está disponível; "Ver foto" amplia a foto com legenda e crédito (autor, licença e fonte).
+- A lista é paginada (12 por página) e informa o total de resultados; sem resultados, aparece uma mensagem.
+- "Alugar" abre o novo Pedido (HU04) já com o automóvel escolhido.
+- Automóvel indisponível (com Pedido ativo) aparece com o botão Alugar bloqueado.
+- Só o Cliente acessa o catálogo; o Agente é redirecionado.
+
 ## HU05 – Consultar status (RF03)
 Como Cliente, quero ver meus Pedidos e o status de cada um, para acompanhar a análise.
 - Vejo somente meus Pedidos.

@@ -12,6 +12,7 @@ flowchart LR
             clientes["clientes.html"]
             pedidos["meus-pedidos.html"]
             avaliacao["avaliacao.html"]
+            catalogo["catalogo.html"]
         end
         subgraph paginas["src/paginas"]
             views["views/*.js"]
@@ -50,11 +51,12 @@ flowchart LR
 | Componente | Interface | Depende de |
 |------------|-----------|------------|
 | views | funções de inicialização por página | components, services, regras, sessao |
-| components | `navbar`, `guarda` (exigirAcesso), `formulario`, `dialogoAvaliacao`, `dialogoContrato`, `tabela`, `statusPedido`, `camposCliente`, `camposPedido`, `entidadesEmpregadoras`: montam HTML Bootstrap e protegem páginas | alertas, sessao, regras/permissoes |
+| components | `navbar`, `guarda` (exigirAcesso), `formulario`, `dialogoAvaliacao`, `dialogoContrato`, `tabela`, `statusPedido`, `camposCliente`, `camposPedido`, `entidadesEmpregadoras`, `cartaoAutomovel`, `fotoAmpliada`, `paginacao`: montam HTML Bootstrap e protegem páginas | alertas, sessao, regras/permissoes |
 | services | `clienteService` (CRUD), `usuarioService.entrar`, `pedidoService` (criar, modificar, cancelar, iniciar análise, avaliar, listar por status), `contratoService` (firmar Contrato com Contrato de Crédito opcional), `automovelService` | regras, api |
-| regras | funções puras de validação, formatação, transição e permissão; `ErroValidacao` | models |
+| regras | funções puras de validação, formatação, transição, permissão e filtro/paginação do catálogo (`automovel.js`); `ErroValidacao` | models |
 | api.js | `requisitar(caminho, opcoes)` com tratamento de erro; `recurso(nome)` com filtro no cliente (ADR 0007), que delega a `recursoLocal` quando `modo.js` define `'local'` | Fetch API, armazenamento-local, modo |
 | armazenamento-local.js | `recursoLocal(nome)` com a mesma interface de `recurso` (listar, obter, criar, atualizar, remover) sobre o `localStorage`; `restaurarDadosDeExemplo()`; semente de `/db.json` (ADR 0010) | localStorage, Fetch API |
+| `public/img/carros/` | fotos dos automóveis, servidas como arquivos estáticos (ADR 0011) | — |
 | JSON Server | `/usuarios`, `/automoveis`, `/pedidos`, `/contratos` | db.json |
 
 ## Visão de implantação
