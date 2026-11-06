@@ -1,7 +1,11 @@
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { createServer } from 'node:http';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, mkdirSync, copyFileSync, rmSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import handler from '../api/index.js';
 import { criarApi } from '../servidor/api.js';
 import { recurso } from '../src/shared/api.js';
@@ -137,4 +141,56 @@ test('a API não serve arquivos estáticos: /public/login.html devolve 404', asy
   const resposta = await fetch(`${base}/public/login.html`);
   assert.equal(resposta.status, 404);
   assert.ok(!(resposta.headers.get('content-type') ?? '').includes('text/html'));
+});
+
+// Em produção o JSON Server (sirv) escaneia `public` relativo ao cwd ao criar o app.
+// Na Function só existem os arquivos do includeFiles do vercel.json, então o cwd simulado
+// é montado só com eles. Sem `public/` o carregamento falha com ENOENT (FUNCTION_INVOCATION_FAILED).
+const raiz = fileURLToPath(new URL('..', import.meta.url));
+const incluidos = () => {
+  const { includeFiles } = JSON.parse(readFileSync(new URL('../vercel.json', import.meta.url), 'utf8')).functions['api/index.js'];
+  return includeFiles.replace(/^\{|\}$/g, '').split(',');
+};
+
+function rodarComoFunction(arquivos) {
+  const cwd = mkdtempSync(join(tmpdir(), 'function-'));
+  try {
+    for (const arquivo of arquivos) {
+      mkdirSync(dirname(join(cwd, arquivo)), { recursive: true });
+      copyFileSync(join(raiz, arquivo), join(cwd, arquivo));
+    }
+    const script = `
+      const { createServer } = await import('node:http');
+      const { default: handler } = await import(${JSON.stringify(new URL('../api/index.js', import.meta.url).href)});
+      const servidor = createServer(handler).listen(0, '127.0.0.1', async () => {
+        const r = await fetch('http://127.0.0.1:' + servidor.address().port + '/pedidos/5');
+        console.log(JSON.stringify({ status: r.status, corpo: await r.json() }));
+        servidor.close(); servidor.closeAllConnections();
+      });`;
+    return spawnSync(process.execPath, ['--input-type=module', '-e', script], {
+      cwd, env: { ...process.env, NODE_ENV: 'production' }, encoding: 'utf8',
+    });
+  } finally {
+    rmSync(cwd, { recursive: true, force: true });
+  }
+}
+
+test('vercel.json inclui db.json e a pasta public na Function', () => {
+  const lista = incluidos();
+  assert.ok(lista.includes('db.json'));
+  assert.ok(lista.some((a) => a.startsWith('public/')));
+});
+
+test('em produção, só com os arquivos do includeFiles, a Function responde GET /pedidos/5', () => {
+  const filho = rodarComoFunction(incluidos());
+  assert.equal(filho.status, 0, filho.stderr);
+  const { status, corpo } = JSON.parse(filho.stdout);
+  assert.equal(status, 200);
+  assert.equal(corpo.status, 'CONTRATADO');
+});
+
+test('em produção, sem public/ no cwd, o JSON Server falha com ENOENT (causa do 500)', () => {
+  const filho = rodarComoFunction(['db.json']);
+  assert.notEqual(filho.status, 0);
+  assert.match(filho.stderr, /ENOENT.*public/);
 });
