@@ -152,7 +152,7 @@ npm install
 ```
 
 ### Inicialização do Banco de Dados
-O banco é o arquivo `db.json`, versionado com dados de exemplo (3 clientes, 1 empresa, 2 bancos, 6 automóveis, 6 pedidos em todos os status e 1 contrato). Para voltar ao estado inicial depois de testar: `git checkout db.json`.
+O banco é o arquivo `db.json`, versionado com dados de exemplo (3 clientes, 1 empresa, 2 bancos, 66 automóveis, 6 pedidos em todos os status e 1 contrato). Para voltar ao estado inicial depois de testar: `git checkout db.json`.
 
 ### Como Executar a Aplicação
 
