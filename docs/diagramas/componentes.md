@@ -49,6 +49,6 @@ flowchart LR
 | views | funções de inicialização por página | components, services, regras, sessao |
 | components | funções que montam HTML Bootstrap | alertas |
 | services | `listar`, `obter`, `criar`, `atualizar`, `remover` e operações de negócio | regras, api |
-| regras | funções puras de validação, transição e permissão | nenhuma |
+| regras | funções puras de validação, formatação, transição e permissão; `ErroValidacao` | models |
 | api.js | `requisitar(caminho, opcoes)` com tratamento de erro | Fetch API |
 | JSON Server | `/usuarios`, `/automoveis`, `/pedidos`, `/contratos` | db.json |

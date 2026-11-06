@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { validarCpf, validarCliente, rendimentoTotal } from '../src/pedidos-contratos/regras/validacoes.js';
+import { validarCpf, validarCliente, rendimentoTotal } from '../src/pedidos-contratos/regras/cliente.js';
 
 const clienteValido = () => ({
   nome: 'Ana Souza',

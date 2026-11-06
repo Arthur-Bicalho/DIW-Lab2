@@ -1,5 +1,6 @@
 import { clienteService } from '../../pedidos-contratos/services/clienteService.js';
-import { ErroValidacao, rendimentoTotal } from '../../pedidos-contratos/regras/validacoes.js';
+import { ErroValidacao } from '../../pedidos-contratos/regras/erros.js';
+import { rendimentoTotal } from '../../pedidos-contratos/regras/cliente.js';
 import { formatarCpf, formatarMoeda } from '../../pedidos-contratos/regras/formatacao.js';
 import { mostrarAlerta } from '../../shared/alertas.js';
 import { limparErros, mostrarErros } from '../components/formulario.js';

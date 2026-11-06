@@ -1,16 +1,5 @@
 import { MAX_ENTIDADES_EMPREGADORAS } from '../models/constantes.js';
-
-export class ErroValidacao extends Error {
-  constructor(erros) {
-    super('Dados inválidos.');
-    this.name = 'ErroValidacao';
-    this.erros = erros;
-  }
-}
-
-export function somenteDigitos(texto) {
-  return String(texto ?? '').replace(/\D/g, '');
-}
+import { somenteDigitos } from './formatacao.js';
 
 function digitoVerificador(digitos, pesoInicial) {
   const soma = digitos.reduce((total, d, i) => total + d * (pesoInicial - i), 0);

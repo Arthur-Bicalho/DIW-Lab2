@@ -1,6 +1,8 @@
 import { recurso } from '../../shared/api.js';
 import { PERFIS, STATUS_EM_ANDAMENTO } from '../models/constantes.js';
-import { ErroValidacao, somenteDigitos, validarCliente } from '../regras/validacoes.js';
+import { ErroValidacao } from '../regras/erros.js';
+import { somenteDigitos } from '../regras/formatacao.js';
+import { validarCliente } from '../regras/cliente.js';
 
 const usuarios = recurso('usuarios');
 const pedidos = recurso('pedidos');
