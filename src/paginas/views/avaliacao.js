@@ -1,11 +1,13 @@
 import { pedidoService } from '../../pedidos-contratos/services/pedidoService.js';
 import { automovelService } from '../../pedidos-contratos/services/automovelService.js';
+import { contratoService } from '../../pedidos-contratos/services/contratoService.js';
 import { usuarioService } from '../../pedidos-contratos/services/usuarioService.js';
 import { STATUS_PEDIDO } from '../../pedidos-contratos/models/constantes.js';
 import { rendimentoTotal } from '../../pedidos-contratos/regras/cliente.js';
 import {
   agentePodeAvaliar, agentePodeIniciarAnalise, agentePodeModificar,
 } from '../../pedidos-contratos/regras/pedido.js';
+import { agentePodeFirmarContrato, podeConcederCredito, tiposPropriedadePermitidos } from '../../pedidos-contratos/regras/contrato.js';
 import { dataDeHoje, formatarData, formatarMoeda } from '../../pedidos-contratos/regras/formatacao.js';
 import { mostrarAlerta } from '../../shared/alertas.js';
 import { exigirAcesso } from '../components/guarda.js';
@@ -26,6 +28,8 @@ const filtroStatus = document.getElementById('filtro-status');
 const formPedido = document.getElementById('form-pedido');
 const formAvaliacao = document.getElementById('form-avaliacao');
 const modalPedido = new bootstrap.Modal(document.getElementById('modal-pedido'));
+const formContrato = document.getElementById('form-contrato');
+const modalContrato = new bootstrap.Modal(document.getElementById('modal-contrato'));
 const modalAvaliacao = new bootstrap.Modal(document.getElementById('modal-avaliacao'));
 let automoveis = [];
 let usuarios = [];
@@ -44,6 +48,9 @@ function linhaDoPedido(pedido) {
   }
   if (agentePodeAvaliar(pedido, sessao.id)) {
     acoes.append(criarBotao('Avaliar', 'btn-success me-1', () => abrirAvaliacao(pedido)));
+  }
+  if (agentePodeFirmarContrato(pedido, sessao.id)) {
+    acoes.append(criarBotao('Firmar contrato', 'btn-primary me-1', () => abrirContrato(pedido)));
   }
   if (agentePodeModificar(pedido)) {
     acoes.append(criarBotao('Modificar', 'btn-outline-primary', () => abrirModificacao(pedido)));
@@ -117,6 +124,19 @@ function abrirAvaliacao(pedido) {
   modalAvaliacao.show();
 }
 
+function abrirContrato(pedido) {
+  pedidoEmEdicao = pedido;
+  limparErros(formContrato);
+  formContrato.reset();
+  formContrato.elements.tipoPropriedade.replaceChildren(
+    ...tiposPropriedadePermitidos(sessao.perfil).map((tipo) => new Option(`Propriedade de ${tipo.toLowerCase()}`, tipo)),
+  );
+  formContrato.elements.tipoPropriedade.selectedIndex = -1;
+  document.getElementById('area-credito').hidden = !podeConcederCredito(sessao.perfil);
+  document.getElementById('campos-credito').hidden = true;
+  modalContrato.show();
+}
+
 formPedido.addEventListener('submit', async (evento) => {
   evento.preventDefault();
   limparErros(formPedido);
@@ -145,6 +165,30 @@ formAvaliacao.addEventListener('submit', async (evento) => {
     await carregar();
   } catch (erro) {
     tratarErroDoFormulario(formAvaliacao, erro);
+  }
+});
+
+formContrato.elements.comCredito.addEventListener('change', (evento) => {
+  document.getElementById('campos-credito').hidden = !evento.target.checked;
+});
+
+formContrato.addEventListener('submit', async (evento) => {
+  evento.preventDefault();
+  limparErros(formContrato);
+  const { tipoPropriedade, comCredito, valor, parcelas, taxaJurosMensal } = formContrato.elements;
+  const dados = {
+    tipoPropriedade: tipoPropriedade.value,
+    credito: comCredito.checked
+      ? { valor: valor.value, parcelas: parcelas.value, taxaJurosMensal: taxaJurosMensal.value }
+      : null,
+  };
+  try {
+    await contratoService.firmar(pedidoEmEdicao.id, sessao, dados, dataDeHoje());
+    modalContrato.hide();
+    mostrarAlerta('Contrato firmado.', 'success');
+    await carregar();
+  } catch (erro) {
+    tratarErroDoFormulario(formContrato, erro);
   }
 });
 

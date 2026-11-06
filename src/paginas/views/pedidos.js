@@ -1,6 +1,8 @@
 import { pedidoService } from '../../pedidos-contratos/services/pedidoService.js';
+import { contratoService } from '../../pedidos-contratos/services/contratoService.js';
 import { automovelService } from '../../pedidos-contratos/services/automovelService.js';
 import { clientePodeCancelar, clientePodeModificar } from '../../pedidos-contratos/regras/pedido.js';
+import { descreverContrato } from '../../pedidos-contratos/regras/contrato.js';
 import { dataDeHoje, formatarData } from '../../pedidos-contratos/regras/formatacao.js';
 import { mostrarAlerta } from '../../shared/alertas.js';
 import { criarBotao, criarCelula } from '../components/tabela.js';
@@ -21,6 +23,7 @@ const formulario = document.getElementById('form-pedido');
 const tituloModal = document.getElementById('titulo-modal');
 const modal = new bootstrap.Modal(document.getElementById('modal-pedido'));
 let automoveis = [];
+let contratos = [];
 let idEmEdicao = null;
 
 function textoDoParecer(parecer) {
@@ -30,6 +33,7 @@ function textoDoParecer(parecer) {
 
 function linhaDoPedido(pedido) {
   const automovel = automoveis.find((a) => a.id === pedido.automovelId);
+  const contrato = contratos.find((c) => c.pedidoId === pedido.id);
   const acoes = document.createElement('td');
   acoes.className = 'text-end text-nowrap';
   if (clientePodeModificar(pedido)) {
@@ -45,6 +49,7 @@ function linhaDoPedido(pedido) {
     criarCelula(`${formatarData(pedido.dataInicio)} a ${formatarData(pedido.dataFim)}`),
     criarCelula(criarSeloStatus(pedido.status)),
     criarCelula(textoDoParecer(pedido.parecer)),
+    criarCelula(contrato ? descreverContrato(contrato) : '-'),
     acoes,
   );
   return tr;
@@ -52,11 +57,13 @@ function linhaDoPedido(pedido) {
 
 async function carregar() {
   try {
-    const [pedidos, lista] = await Promise.all([
+    const [pedidos, listaAutomoveis, listaContratos] = await Promise.all([
       pedidoService.listarDoCliente(sessao.id),
       automovelService.listar(),
+      contratoService.listar(),
     ]);
-    automoveis = lista;
+    automoveis = listaAutomoveis;
+    contratos = listaContratos;
     corpoTabela.replaceChildren(...pedidos.map(linhaDoPedido));
     document.getElementById('sem-pedidos').hidden = pedidos.length > 0;
   } catch (erro) {
