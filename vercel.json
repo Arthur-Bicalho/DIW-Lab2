@@ -1,0 +1,16 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "db.json"
+    }
+  },
+  "redirects": [
+    { "source": "/", "destination": "/public/login.html", "permanent": false }
+  ],
+  "rewrites": [
+    { "source": "/:recurso(usuarios|automoveis|pedidos|contratos)", "destination": "/api" },
+    { "source": "/:recurso(usuarios|automoveis|pedidos|contratos)/:resto*", "destination": "/api" }
+  ]
+}
