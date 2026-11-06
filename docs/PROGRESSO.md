@@ -25,7 +25,7 @@ Registro por entrega. Os links dos Pull Requests estão em https://github.com/Ar
 | 10 | Avaliação do Agente | `feature/avaliacao-agente` | `2dcbbb4` | [#22](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/22) | |
 | 11 | Contratos e crédito | `feature/contratos-credito` | `fd315b8` | [#23](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/23) | O Banco que firma concede o crédito |
 | 12 | Arquitetura após o protótipo | `refactor/arquitetura-prototipo` | `04f22fe` | [#25](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/25) | ADR 0008 |
-| 13 | README e progresso | `docs/readme` | ver `git log` | ver PR da branch | |
+| 13 | README e progresso | `docs/readme` | `9e2bf3d`, `a86638a` | [#26](https://github.com/Arthur-Bicalho/DIW-Lab2/pull/26) | |
 
 ## Checklist de requisitos
 
